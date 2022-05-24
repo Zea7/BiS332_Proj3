@@ -31,10 +31,9 @@ class __HTMLParser_GetIDS(HTMLParser):
             print("Which do you want?")
             for i in self.drug_names:
                 print(i.replace("\n",""))
-            return False
+            return self.drug_names
         else:
-            get_side_effect(self.drug_ids[0])
-            return True
+            return get_side_effect(self.drug_ids[0])
                 
             
     def handle_data(self, data):
@@ -111,12 +110,12 @@ def get_side_effect(id_url):
     url = "http://sideeffects.embl.de/" + id_url
     response = requests.get(url)
     
-    __parse_html_get_side_effects(response.content.decode('ascii'))
+    return __parse_html_get_side_effects(response.content.decode('ascii'))
 
 def __parse_html_get_side_effects(html):
     parser = __HTMLParser_GetSideEffects()
     parser.feed(html)
-    print(parser.get_side_effects())
+    return parser.get_side_effects()
     
 def __parse_html_get_ids(html:str):
     parser = __HTMLParser_GetIDS()
@@ -126,6 +125,6 @@ def __parse_html_get_ids(html:str):
     
 if __name__ == "__main__":
     name = input()
-    while not get_id(name):
+    while type(get_id(name)) == list:
         name=input()
     

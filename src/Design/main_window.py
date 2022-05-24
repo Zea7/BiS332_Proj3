@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-form_class = uic.loadUiType("../../UI/main.ui")[0]
+form_class = uic.loadUiType("./UI/main.ui")[0]
 
 class MainWindow(QMainWindow, form_class):
     def __init__(self):
@@ -17,7 +17,10 @@ class MainWindow(QMainWindow, form_class):
         print(self.DiseaseInput.toPlainText())
         self.FindingLabel.show()
         self.SearchProgressBar.show()
+    
         
+    
+            
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
