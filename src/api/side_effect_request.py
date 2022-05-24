@@ -3,9 +3,47 @@ from html.parser import HTMLParser
 import requests
 
 class __HTMLParser_GetIDS(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.drug_count = 0
+        self.in_drug_list = False
+        self.drug_names = []
+        self.drug_ids = []
+        self.get_names = False
+        
     def handle_starttag(self, tag, attrs):
-        if tag=="a":
-            get_side_effect(attrs[2][1])
+        if tag=="a" and self.in_drug_list:
+            self.drug_count += 1
+            self.drug_ids.append(attrs[2][1])
+            self.get_names= True
+            
+    def handle_endtag(self, tag):
+        if tag == "td" and self.in_drug_list:
+            self.in_drug_list = False
+            self.get_names = False
+            # self.check_wheter_correct_drug_or_not()
+
+    def check_wheter_correct_drug_or_not(self):
+        if self.drug_count == 0:
+            print("No Match Drugs")
+        elif self.drug_count > 1:
+            print("There are many drugs with simular name")
+            print("Which do you want?")
+            for i in self.drug_names:
+                print(i.replace("\n",""))
+            return False
+        else:
+            get_side_effect(self.drug_ids[0])
+            return True
+                
+            
+    def handle_data(self, data):
+        if data.strip("\n") == "Drugs:":
+            self.in_drug_list = True
+        
+        if self.get_names:
+            if len(data.strip()) != 0:
+                self.drug_names.append(data)
             
 class __HTMLParser_GetSideEffects(HTMLParser):
     def __init__(self):
@@ -67,7 +105,7 @@ def get_id(name):
     url = "http://sideeffects.embl.de/searchBox/?q=" + name
     response = requests.get(url)
     
-    __parse_html_get_ids(response.content.decode('ascii'))
+    return __parse_html_get_ids(response.content.decode('ascii'))
     
 def get_side_effect(id_url):
     url = "http://sideeffects.embl.de/" + id_url
@@ -84,7 +122,10 @@ def __parse_html_get_ids(html:str):
     parser = __HTMLParser_GetIDS()
     parser.feed(html)
     
+    return parser.check_wheter_correct_drug_or_not()
+    
 if __name__ == "__main__":
     name = input()
-    get_id(name)
+    while not get_id(name):
+        name=input()
     
