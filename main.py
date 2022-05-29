@@ -15,6 +15,6 @@ import sys
 # print(get_id(name))
     
 app = QApplication(sys.argv)
-window = ResultWindow(drug_list=["Cladribine", "clarithromycin"])
+window = MainWindow()
 window.show()
 app.exec_()

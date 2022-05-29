@@ -26,6 +26,7 @@ class __HTMLParser_GetIDS(HTMLParser):
     def check_wheter_correct_drug_or_not(self):
         if self.drug_count == 0:
             print("No Match Drugs")
+            return "No Match Drugs"
         elif self.drug_count > 1:
             print("There are many drugs with simular name")
             print("Which do you want?")

@@ -13,15 +13,13 @@ class ResultWindow(QMainWindow, form_class):
         self.drug_list = drug_list
         self.__init_ui()
         self.disease_list = disease_list
+        self.drug_name = ""
         
     def __init_ui(self):
         for name in self.drug_list:
             self.DrugList.addItem(QListWidgetItem(name, None, 0))
         
-        self.DrugList.itemClicked.connect(self.__get_side_effects)
-        
-
-        
+        self.DrugList.itemClicked.connect(self.__get_side_effects)   
         
     def __get_disease_names(self):
         pass
@@ -30,9 +28,17 @@ class ResultWindow(QMainWindow, form_class):
         pass
     
     def __get_side_effects(self):
-        self.SideEffectList.clear()
-        drug_name = self.DrugList.currentItem().text()
+        if self.drug_name == self.DrugList.currentItem().text():
+            return
+        else:
+            self.drug_name = self.DrugList.currentItem().text()
             
-        for name, probability in get_id(drug_name).items():
-            text = name + " : " + probability
-            self.SideEffectList.addItem(QListWidgetItem(text, None, 0))
+        self.SideEffectList.clear()
+        if type(self.drug_name) == str:
+            self.SideEffectList.addItem(self.drug_name)
+            
+            
+        else:
+            for name, probability in get_id(self.drug_name).items():
+                text = name.strip() + " : " + probability
+                self.SideEffectList.addItem(text)
