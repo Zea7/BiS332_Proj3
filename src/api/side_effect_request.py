@@ -23,17 +23,20 @@ class __HTMLParser_GetIDS(HTMLParser):
             self.get_names = False
             # self.check_wheter_correct_drug_or_not()
 
-    def check_wheter_correct_drug_or_not(self):
+    def check_wheter_correct_drug_or_not(self, name):
         if self.drug_count == 0:
             print("No Match Drugs")
             return "No Match Drugs"
         elif self.drug_count > 1:
             print("There are many drugs with simular name")
             print("Which do you want?")
-            for i in self.drug_names:
+            for index, i in enumerate(self.drug_names):
                 print(i.replace("\n",""))
+                if i == name:
+                    return get_side_effect(self.drug_ids[index])
             return self.drug_names
         else:
+            print("Get Side Effects")
             return get_side_effect(self.drug_ids[0])
                 
             
@@ -105,7 +108,7 @@ def get_id(name):
     url = "http://sideeffects.embl.de/searchBox/?q=" + name
     response = requests.get(url)
     
-    return __parse_html_get_ids(response.content.decode('ascii'))
+    return __parse_html_get_ids(response.content.decode('ascii'), name)
     
 def get_side_effect(id_url):
     url = "http://sideeffects.embl.de/" + id_url
@@ -118,11 +121,11 @@ def __parse_html_get_side_effects(html):
     parser.feed(html)
     return parser.get_side_effects()
     
-def __parse_html_get_ids(html:str):
+def __parse_html_get_ids(html:str, name):
     parser = __HTMLParser_GetIDS()
     parser.feed(html)
     
-    return parser.check_wheter_correct_drug_or_not()
+    return parser.check_wheter_correct_drug_or_not(name)
     
 if __name__ == "__main__":
     name = input()

@@ -20,7 +20,7 @@
       <x>30</x>
       <y>40</y>
       <width>256</width>
-      <height>461</height>
+      <height>221</height>
      </rect>
     </property>
    </widget>
@@ -49,12 +49,12 @@
      <rect>
       <x>30</x>
       <y>20</y>
-      <width>81</width>
+      <width>131</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>질병 목록</string>
+     <string>현재 걸린 질병 목록</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -81,6 +81,29 @@
     </property>
     <property name="text">
      <string>부작용</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>280</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>취약 질병 목록</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="RelatedDiseaseList">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>256</width>
+      <height>201</height>
+     </rect>
     </property>
    </widget>
   </widget>

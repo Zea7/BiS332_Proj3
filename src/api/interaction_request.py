@@ -10,7 +10,7 @@ def __get_interaction_with_ids(ids):
     datas = response.json().get("data").get("searchResults")
     
     res = []
-    
+    print(ids)
     for result in datas:
         items = result.get("items")
         name= [items[0].get("name"), items[1].get("name")]
@@ -26,15 +26,11 @@ def __get_interaction_with_ids(ids):
 def __get_ids(name, size):
     response = requests.get("https://www.uptodate.com/services/app/drug/interaction/search/autocomplete/json?term={1}&page=1&pageSize={0}".format(size, name))
     datas = response.json().get("data").get("drugs")
-    
-    if len(datas) > 1:
-        print("You need more specific name!")
-        print("Which drug is are you looking for?")
-        for i in datas:
-            print(i['name'])
-        
-        get_name = input()
-        return __get_ids(get_name, size)
+    print(datas)
+    if datas == None:
+        return False
+    if len(datas) != 1:
+        return False
     else:
         return datas[0]['id']
        
@@ -54,10 +50,13 @@ def get_interaction(names):
     ids = []
     
     for _, name in enumerate(names):
-        ids.append(__get_ids(name, 10))
+        id = __get_ids(name, 10)
+        print(id)
+        if id != False:
+            ids.append(__get_ids(name, 10))
     
   
-    print(__get_interaction_with_ids(ids))
+    return __get_interaction_with_ids(ids)
     
 if __name__=="__main__":
     names = ["aa-adefovir", "cladribine", "Tenofovir Products"]
